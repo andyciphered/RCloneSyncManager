@@ -1,0 +1,95 @@
+jobs:
+
+  # ---------- PERSONAL ----------
+
+  - id: personal_drive
+    name: Personal Drive
+    group: Personal
+    remote: "gd_hca_personal:"
+    local: ~/CloudSync/Personal/Drive
+    mode: bisync
+
+  - id: personal_dropbox
+    name: Personal Dropbox
+    group: Personal
+    remote: "db_andy_personal:"
+    local: ~/CloudSync/Personal/Dropbox
+    mode: bisync
+
+  - id: personal_onedrive
+    name: Personal OneDrive
+    group: Personal
+    remote: "od_hca_personal:"
+    local: ~/CloudSync/Personal/OneDrive
+    mode: bisync
+
+  # ---------- WORK ----------
+
+  - id: work_drive
+    name: Work Drive
+    group: Work
+    remote: "gd_andy_work:"
+    local: ~/CloudSync/Work/Drive
+    mode: bisync
+
+  - id: work_dropbox
+    name: Work Dropbox
+    group: Work
+    remote: "db_hca_work:"
+    local: ~/CloudSync/Work/Dropbox
+    mode: bisync
+
+  - id: nfa
+    name: NFA
+    group: Work
+    remote: "gd_nfa_work:"
+    local: ~/CloudSync/Work/NFA
+    mode: bisync
+    exclude: nfa-main.txt
+
+  # ---------- BSM ----------
+
+  - id: bsm_personal
+    name: BSM Personal
+    group: BSM
+    remote: "gd_nfa_work:BSM_Personal"
+    local: ~/CloudSync/Work/BSM/Personal
+    mode: bisync
+
+  - id: bsm_milling
+    name: BSM Milling
+    group: BSM
+    remote: "gd_nfa_work:BSM_Milling"
+    local: ~/CloudSync/Work/BSM/Milling
+    mode: bisync
+    exclude: bsm-milling.txt
+
+  - id: bsm_dispersal
+    name: BSM Dispersal
+    group: BSM
+    remote: "gd_nfa_work:BSM_Dispersal"
+    local: ~/CloudSync/Work/BSM/Dispersal
+    mode: bisync
+
+  - id: warehouse_reports
+    name: Warehouse Reports 2026
+    group: BSM
+    remote: "od_bsm_work:1 WAREHOUSE REPORTS 2026"
+    local: ~/CloudSync/Work/BSM/Warehouse
+    mode: download
+
+  - id: tasks_in_progress
+    name: Tasks in Progress
+    group: BSM
+    remote: "gd_nfa_work:BSM_Milling/~ TASKS IN PROGRESS"
+    local: ~/CloudSync/Work/BSM/Milling/~ TASKS IN PROGRESS
+    mode: upload
+
+  # ---------- SCHOOL ----------
+
+  - id: school
+    name: School Google Drive
+    group: School
+    remote: "gd_hca_school:"
+    local: ~/CloudSync/School
+    mode: bisync

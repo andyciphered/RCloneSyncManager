@@ -1,6 +1,5 @@
-def main():
-    print("RClone Sync Manager v0.1")
-    print("Hello, Andy!")
+from rcsm.app import run
 
 if __name__ == "__main__":
-    main()
+    run()
+    
