@@ -3,16 +3,21 @@ from pathlib import Path
 from rcsm.models.job import SyncJob
 
 
-def build_command(job: SyncJob) -> list[str]:
+def build_command(
+    job: SyncJob,
+    execution_mode: str = "normal",
+    conflict: str | None = None,
+    dry_run: bool = False,
+) -> list[str]:
     """
     Build the rclone command for a sync job.
-    Returns the command as a list, ready for subprocess.run().
     """
 
     local = str(Path(job.local).expanduser())
     remote = job.remote
 
     if job.mode == "bisync":
+
         command = [
             "rclone",
             "bisync",
@@ -21,6 +26,7 @@ def build_command(job: SyncJob) -> list[str]:
         ]
 
     elif job.mode == "download":
+
         command = [
             "rclone",
             "sync",
@@ -29,6 +35,7 @@ def build_command(job: SyncJob) -> list[str]:
         ]
 
     elif job.mode == "upload":
+
         command = [
             "rclone",
             "sync",
@@ -40,9 +47,29 @@ def build_command(job: SyncJob) -> list[str]:
         raise ValueError(f"Unknown mode: {job.mode}")
 
     if job.exclude:
-        command.extend([
-            "--exclude-from",
-            f"config/excludes/{job.exclude}"
-        ])
+        command.extend(
+            [
+                "--exclude-from",
+                f"config/excludes/{job.exclude}",
+            ]
+        )
+
+    if execution_mode == "resync":
+        command.append("--resync")
+
+    elif execution_mode == "force":
+
+        command.append("--force")
+
+        if conflict:
+            command.extend(
+                [
+                    "--conflict-resolve",
+                    conflict,
+                ]
+            )
+
+    if dry_run:
+        command.append("--dry-run")
 
     return command

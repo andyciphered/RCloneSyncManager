@@ -73,8 +73,8 @@ def run():
 
         if answer == "Y":
 
-            result = execute(selected)
-
+            result = execute(command)
+            
             if result == 0:
                 console.print("\n[green]Sync completed successfully.[/green]")
             else:
