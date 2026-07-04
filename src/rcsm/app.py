@@ -4,6 +4,7 @@ from rich.table import Table
 from rcsm.services.command_builder import build_command
 from rcsm.services.config import load_jobs
 from rcsm.services.health import check_rclone
+from rcsm.services.rclone import execute
 from rcsm.ui.banner import show_banner
 from rcsm.ui.menu import show_main_menu
 
@@ -37,7 +38,7 @@ def run():
         return
 
     if choice == "A":
-        console.print("\n[green]Sync All will be implemented in the next milestone.[/green]")
+        console.print("\n[green]Sync All will be implemented later.[/green]")
         return
 
     if choice in menu:
@@ -45,13 +46,12 @@ def run():
         group = menu[choice]
 
         console.print()
-
         console.print(f"[bold cyan]{group}[/bold cyan]\n")
 
         for index, job in enumerate(groups[group], start=1):
             console.print(f"{index}. {job.name}")
 
-        print()
+        console.print()
 
         selection = input("Select a job: ")
 
@@ -67,5 +67,17 @@ def run():
         console.print()
         console.print("[bold green]Generated Command[/bold green]\n")
         console.print(" ".join(command))
+        console.print()
 
-        input("\nPress Enter to exit...")
+        answer = input("Run this command? (Y/N): ").strip().upper()
+
+        if answer == "Y":
+
+            result = execute(selected)
+
+            if result == 0:
+                console.print("\n[green]Sync completed successfully.[/green]")
+            else:
+                console.print(f"\n[red]Sync failed (Exit Code {result}).[/red]")
+
+        input("\nPress Enter to continue...")
