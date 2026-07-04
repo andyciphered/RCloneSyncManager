@@ -22,6 +22,7 @@ jobs:
     remote: "od_hca_personal:"
     local: ~/CloudSync/Personal/OneDrive
     mode: bisync
+    exclude: onedrive-personal.txt
 
   # ---------- WORK ----------
 

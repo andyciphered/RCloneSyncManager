@@ -52,18 +52,32 @@ def build_command(
     else:
         raise ValueError(f"Unknown mode: {job.mode}")
 
-    if job.exclude:
-        command.extend(
-            [
-                "--exclude-from",
-                f"config/excludes/{job.exclude}",
-                "--exclude-from",
-                str(exclude_file),
-            ]
+    # Optional exclude file
+    print("Job:", job.name)
+    print("Exclude:", job.exclude)
+
+    if getattr(job, "exclude", None):
+
+        exclude_file = (
+            Path(__file__).resolve().parents[3]
+            / "config"
+            / "excludes"
+            / job.exclude
         )
 
-# Execution mode modifiers
+        if exclude_file.exists():
+            command.extend(
+                [
+                    "--exclude-from",
+                    str(exclude_file),
+                ]
+            )
+        else:
+            print(
+                f"Warning: Exclude file '{job.exclude}' not found. Continuing without exclusions."
+            )
 
+    # Execution mode modifiers
     if execution_mode == "resync":
         command.append("--resync")
 
@@ -75,7 +89,7 @@ def build_command(
             command.extend(
                 [
                     "--conflict-resolve",
-                    CONFLICT_RESOLVE_VALUES.get(conflict, conflict),
+                    CONFLICT_RESOLVE_VALUES[conflict],
                 ]
             )
 
