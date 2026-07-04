@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from rich.console import Console
 from rich.table import Table
 
@@ -99,7 +101,6 @@ def report_result(result):
     else:
         console.print(f"\n[red]Sync failed (Exit Code {result}).[/red]")
 
-
 def execute_command(
     command,
     require_confirm=True,
@@ -113,18 +114,6 @@ def execute_command(
     if require_confirm and not confirm("Run this command? (Y/N): "):
         return None, ""
 
-    from pathlib import Path
-
-    local = Path(job.local).expanduser()
-
-    if not local.exists():
-        console.print(f"\n[yellow]Creating local folder:[/yellow]")
-        console.print(local)
-
-        local.mkdir(parents=True, exist_ok=True)
-
-        console.print("[green]✓ Folder created.[/green]\n")
-
     result, output = execute(command)
 
     if report:
@@ -132,6 +121,19 @@ def execute_command(
 
     return result, output
 
+def ensure_local_folder(job):
+
+    local = Path(job.local).expanduser()
+
+    if local.exists():
+        return
+
+    console.print()
+    console.print(f"[yellow]Creating local folder:[/yellow] {local}")
+
+    local.mkdir(parents=True, exist_ok=True)
+
+    console.print("[green]✓ Folder created.[/green]\n")
 
 def handle_resync_recovery(job, command, result, output):
 
@@ -165,10 +167,12 @@ def handle_resync_recovery(job, command, result, output):
             show_preview=False,
         )
 
-
 def execute_normal(job):
 
+    ensure_local_folder(job)
+
     command = build_command(job)
+
     result, output = execute_command(command)
 
     if result is not None:
@@ -179,13 +183,21 @@ def execute_normal(job):
 
 def execute_resync(job):
 
-    command = build_command(job, execution_mode="resync")
+    ensure_local_folder(job)
+
+    command = build_command(
+        job,
+        execution_mode="resync",
+    )
+
     execute_command(command)
 
     return True
 
 
 def execute_force(job):
+
+    ensure_local_folder(job)
 
     conflict = select_force_conflict()
 
@@ -209,11 +221,11 @@ def execute_force(job):
         report=False,
     )
     
-    console.print("\n[green]Dry Run completed.[/green]")
-
     if result != 0:
         console.print(f"\n[red]Dry run failed (Exit Code {result}).[/red]")
         return False
+
+    console.print("\n[green]Dry Run completed.[/green]")
 
     command = build_command(
         job,
