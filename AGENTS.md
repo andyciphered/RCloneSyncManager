@@ -80,3 +80,16 @@ When modifying a file:
 - Never duplicate functions.
 - Never leave dead or unreachable code.
 - If a refactor is requested, rewrite the affected function cleanly rather than patching fragments together.
+
+## Verification Rules
+
+Before modifying a file:
+
+- Read the entire file.
+
+After modifying a file:
+
+- Run compileall.
+- Verify there are no duplicated functions.
+- Verify there are no duplicated return statements.
+- Verify there is only one implementation of each workflow.
