@@ -3,6 +3,12 @@ from pathlib import Path
 from rcsm.models.job import SyncJob
 
 
+CONFLICT_RESOLVE_VALUES = {
+    "push": "newer",
+    "pull": "older",
+}
+
+
 def build_command(
     job: SyncJob,
     execution_mode: str = "normal",
@@ -65,7 +71,7 @@ def build_command(
             command.extend(
                 [
                     "--conflict-resolve",
-                    conflict,
+                    CONFLICT_RESOLVE_VALUES.get(conflict, conflict),
                 ]
             )
 

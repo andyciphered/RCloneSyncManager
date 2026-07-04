@@ -70,3 +70,13 @@ Always provide:
 - Files modified
 - Test instructions
 - Suggested Git commit message
+
+## Editing Rules
+
+When modifying a file:
+
+- Replace existing implementations instead of merging duplicate logic.
+- Never leave two implementations of the same workflow.
+- Never duplicate functions.
+- Never leave dead or unreachable code.
+- If a refactor is requested, rewrite the affected function cleanly rather than patching fragments together.
