@@ -18,13 +18,23 @@ def execute(command: list[str]) -> tuple[int, str]:
     console.print(" ".join(command))
     console.print()
 
-    process = subprocess.Popen(
-        command,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        text=True,
-        bufsize=1,
-    )
+    try:
+        process = subprocess.Popen(
+            command,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            bufsize=1,
+        )
+
+    except FileNotFoundError:
+        console.print(
+            "\n[red]Error:[/red] rclone executable not found."
+        )
+        console.print(
+            "Please install rclone or ensure it is available in your PATH."
+        )
+        return 127, ""
 
     output_lines = []
 

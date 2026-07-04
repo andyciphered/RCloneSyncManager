@@ -113,6 +113,18 @@ def execute_command(
     if require_confirm and not confirm("Run this command? (Y/N): "):
         return None, ""
 
+    from pathlib import Path
+
+    local = Path(job.local).expanduser()
+
+    if not local.exists():
+        console.print(f"\n[yellow]Creating local folder:[/yellow]")
+        console.print(local)
+
+        local.mkdir(parents=True, exist_ok=True)
+
+        console.print("[green]✓ Folder created.[/green]\n")
+
     result, output = execute(command)
 
     if report:
@@ -188,11 +200,16 @@ def execute_force(job):
         dry_run=True,
     )
 
+    console.print()
+    console.print("[bold yellow]Running Dry Run...[/bold yellow]\n")
+
     result, _ = execute_command(
         dry_run_command,
         require_confirm=False,
         report=False,
     )
+    
+    console.print("\n[green]Dry Run completed.[/green]")
 
     if result != 0:
         console.print(f"\n[red]Dry run failed (Exit Code {result}).[/red]")

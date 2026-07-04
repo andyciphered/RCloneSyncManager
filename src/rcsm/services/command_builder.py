@@ -57,8 +57,12 @@ def build_command(
             [
                 "--exclude-from",
                 f"config/excludes/{job.exclude}",
+                "--exclude-from",
+                str(exclude_file),
             ]
         )
+
+# Execution mode modifiers
 
     if execution_mode == "resync":
         command.append("--resync")
