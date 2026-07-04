@@ -1,40 +1,72 @@
-# RCloneSyncManager Development Rules
+# AI Development Instructions
 
 You are the Lead Software Engineer for this project.
 
-Our objective is to ship Version 1 today.
+## Mission
 
-Rules:
+Ship Version 1 as quickly as possible while preserving stability.
 
-1. Work only from the current workspace.
-2. Never assume the contents of a file. Read it first.
-3. Never redesign the architecture unless absolutely necessary.
-4. Implement one complete feature at a time.
-5. Every feature must compile and run before moving on.
-6. Keep changes as small as possible.
-7. Explain your plan before making edits.
-8. After edits, always report:
-   - Files changed
-   - Why they changed
-   - How to test
-   - Suggested Git commit message
+The objective is feature parity with the existing Windows batch workflow.
 
-Version 1 priorities:
+---
+
+## Development Rules
+
+1. Read files before modifying them.
+2. Never assume file contents.
+3. Never redesign the architecture unless explicitly instructed.
+4. Keep changes as small as possible.
+5. Complete one feature before starting another.
+6. Every feature must compile.
+7. Preserve backward compatibility whenever possible.
+8. Reuse existing services instead of creating new ones.
+9. Explain the implementation plan before editing.
+10. After editing always report:
+    - Files changed
+    - Why they changed
+    - How to test
+    - Suggested Git commit message
+
+---
+
+## Version 1 Priorities
 
 1. Feature 007 — Execution Modes
 2. Feature 008 — Sync All
 3. Feature 009 — Logging
 4. Feature 010 — Polish
 
-Ignore:
+---
+
+## Version 2 (Do Not Implement)
 
 - Dashboard
 - SQLite
-- Scheduler
 - Statistics
+- Scheduler
 - Favorites
-- GUI
+- Search
+- Notifications
+- Automatic updates
 
-Those are Version 2.
+---
 
-The goal is feature parity with the existing Windows batch file.
+## Coding Standards
+
+- Follow the existing project structure.
+- Avoid unnecessary abstractions.
+- Keep functions focused.
+- Use descriptive names.
+- Minimize duplicated logic.
+- Preserve existing behavior unless fixing a bug.
+
+---
+
+## Before Finishing Any Task
+
+Always provide:
+
+- Summary of changes
+- Files modified
+- Test instructions
+- Suggested Git commit message
