@@ -73,11 +73,49 @@ def run():
 
         if answer == "Y":
 
-            result = execute(command)
-            
+            result, output = execute(command)
+
             if result == 0:
                 console.print("\n[green]Sync completed successfully.[/green]")
             else:
                 console.print(f"\n[red]Sync failed (Exit Code {result}).[/red]")
 
+            if (
+                result == 7
+                or "Must run --resync" in output
+            ):
+                console.print()
+                console.print("[yellow]Bisync requires a Resync.[/yellow]")
+
+                answer = input("Run Resync now? (Y/N): ").strip().upper()
+
+                if answer == "Y":
+
+                    resync_command = build_command(
+                        selected,
+                        execution_mode="resync",
+                    )
+
+                    result, _ = execute(resync_command)
+
+                    if result == 0:
+
+                        console.print("\n[green]Resync completed.[/green]")
+
+                        answer = input(
+                            "Run normal sync now? (Y/N): "
+                        ).strip().upper()
+
+                        if answer == "Y":
+
+                            result, _ = execute(command)
+
+                            if result == 0:
+                                console.print(
+                                    "\n[green]Sync completed successfully.[/green]"
+                                )
+                            else:
+                                console.print(
+                                    f"\n[red]Sync failed (Exit Code {result}).[/red]"
+                                )
         input("\nPress Enter to continue...")
