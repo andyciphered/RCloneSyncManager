@@ -6,7 +6,7 @@ A professional cross-platform cloud synchronization manager powered by rclone.
 
 # Current Status
 
-Version: v1.0.0-beta
+Version: v1.0.0
 
 Current Milestone:
 Achieve feature parity with the existing Windows batch workflow.
