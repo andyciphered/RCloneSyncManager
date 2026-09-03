@@ -17,7 +17,59 @@ def load_jobs():
 
     jobs = []
 
+    required_fields = [
+        "id",
+        "name",
+        "group",
+        "remote",
+        "local",
+        "mode",
+    ]
+
+    valid_modes = {
+        "bisync",
+        "download",
+        "upload",
+    }
+
+    exclude_dir = (
+        project_root
+        / "config"
+        / "excludes"
+    )
+
     for item in data["jobs"]:
+
+        for field in required_fields:
+
+            if field not in item or item[field] in (None, ""):
+                raise ValueError(
+                    f"Configuration error: "
+                    f"Job is missing required field '{field}'."
+                )
+
+        if item["mode"] not in valid_modes:
+            raise ValueError(
+                f"Configuration error: "
+                f"Job '{item['name']}' has invalid mode "
+                f"'{item['mode']}'. "
+                f"Valid modes: bisync, download, upload."
+            )
+
+        if item.get("exclude"):
+
+            exclude_file = (
+                exclude_dir
+                / item["exclude"]
+            )
+
+            if not exclude_file.exists():
+                raise ValueError(
+                    f"Configuration error: "
+                    f"Job '{item['name']}' references "
+                    f"missing exclude file "
+                    f"'{item['exclude']}'."
+                )
 
         jobs.append(
             SyncJob(

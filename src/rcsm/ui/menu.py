@@ -2,6 +2,8 @@ from collections import defaultdict
 
 from rich.console import Console
 
+from rcsm.ui.input import get_key
+
 console = Console()
 
 
@@ -35,6 +37,8 @@ def show_main_menu(jobs):
 
     console.print("[green]A[/green]. Sync All")
 
+    console.print("[blue]L[/blue]. Sync History")
+
     console.print("[red]Q[/red]. Quit\n")
 
-    return input("Select: ").strip().upper(), groups, menu
+    return get_key("Select: ").strip().upper(), groups, menu

@@ -52,11 +52,7 @@ def build_command(
     else:
         raise ValueError(f"Unknown mode: {job.mode}")
 
-    # Optional exclude file
-    print("Job:", job.name)
-    print("Exclude:", job.exclude)
-
-    if getattr(job, "exclude", None):
+    if job.exclude:
 
         exclude_file = (
             Path(__file__).resolve().parents[3]
