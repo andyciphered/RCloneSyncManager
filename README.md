@@ -39,6 +39,12 @@ From the project directory:
 python -m rcsm
 ```
 
+### Launch with the macOS application
+
+Double-click: RCloneSyncManager.app
+
+The application opens Terminal and starts RCloneSyncManager.
+
 ### Launch with the macOS launcher
 
 Double-click:
@@ -48,6 +54,7 @@ RCloneSyncManager.command
 ```
 
 The launcher activates the project's virtual environment and starts RCloneSyncManager.
+
 
 ## Configuration
 

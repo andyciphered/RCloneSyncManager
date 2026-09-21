@@ -122,6 +122,13 @@ These features are intentionally postponed until Version 1 is complete.
 - [x] Feature 009 complete
 - [x] Feature 010 complete
 - [x] Feature 011 complete
-- [ ] README updated
+- [x] README updated
 - [x] .gitignore cleaned
-- [ ] Version 1 released
+- [x] Version 1 released
+
+## Feature 012 — macOS Application Bundle
+
+- Finder-launchable RCloneSyncManager.app
+- Custom macOS application icon
+- Opens Terminal and starts RCloneSyncManager
+- Existing RCloneSyncManager.command retained as fallback

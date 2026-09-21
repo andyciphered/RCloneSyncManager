@@ -8,7 +8,7 @@ def show_banner():
 
     panel = Panel.fit(
         "[bold cyan]RClone Sync Manager[/bold cyan]\n"
-        "[green]v1.1.0[/green]",
+        "[green]v1.2.0[/green]",
         border_style="cyan",
     )
 
