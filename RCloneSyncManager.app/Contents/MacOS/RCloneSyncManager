@@ -1,0 +1,5 @@
+#!/bin/bash
+
+PROJECT_DIR="$(cd "$(dirname "$0")/../../../" && pwd)"
+
+open -a Terminal "$PROJECT_DIR/RCloneSyncManager.command"
