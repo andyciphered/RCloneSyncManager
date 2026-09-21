@@ -24,6 +24,13 @@ jobs:
     mode: bisync
     exclude: onedrive-personal.txt
 
+  - id: personal_box
+    name: Personal Box
+    group: Personal
+    remote: "box_andy_personal:"
+    local: ~/CloudSync/Personal/Box
+    mode: bisync
+
   # ---------- WORK ----------
 
   - id: work_drive
