@@ -18,6 +18,11 @@ from rcsm.ui.banner import show_banner
 from rcsm.ui.menu import show_main_menu
 from rcsm.ui.input import get_key
 
+from rcsm.services.warehouse_download_logger import (
+    prepare_change_report,
+    record_new_downloads,
+)
+
 console = Console()
 
 def show_status(jobs):
@@ -327,17 +332,51 @@ def handle_resync_recovery(job, command, result, output):
 
     return retry_result == 0
 
+
 def execute_normal(job, confirm_before_run=True):
 
     ensure_local_folder(job)
 
     command = build_command(job)
 
+    track_warehouse_downloads = (
+        getattr(job, "id", None) == "warehouse_reports"
+        and job.mode == "download"
+    )
+
+    if track_warehouse_downloads:
+        change_report = prepare_change_report()
+
+        command.extend([
+            "--combined",
+            str(change_report),
+        ])
+
     result, output = execute_command(
         command,
         require_confirm=confirm_before_run,
         job_name=job.name,
     )
+
+    if track_warehouse_downloads and result is not None:
+        new_files = record_new_downloads(
+            job.name,
+            result,
+        )
+
+        if result == 0:
+            if new_files:
+                console.print(
+                    f"\n[green]New files downloaded: "
+                    f"{len(new_files)}[/green]"
+                )
+
+                for path in new_files:
+                    console.print(f"  + {path}")
+            else:
+                console.print(
+                    "\n[cyan]No new warehouse report files.[/cyan]"
+                )
 
     if result is None:
         return False
@@ -351,6 +390,7 @@ def execute_normal(job, confirm_before_run=True):
         result,
         output,
     )
+
 
 def execute_resync(job, confirm_before_run=True):
 
@@ -639,6 +679,7 @@ def run():
     jobs = load_jobs()
     show_status(jobs)
 
+    
     while True:
 
         choice, groups, menu = show_main_menu(jobs)
@@ -655,6 +696,14 @@ def run():
             show_sync_history()
             input("\nPress Enter to continue...")
             continue
+
+        
+        if choice == "O":
+            open_logs_folder()
+
+            input("\nPress Enter to continue...")
+            continue
+
 
         if choice not in menu:
             console.print("[red]Invalid selection[/red]")
@@ -674,3 +723,28 @@ def run():
         execute_selected_mode(selected, execution_mode)
 
         input("\nPress Enter to continue...")
+
+
+def open_logs_folder():
+    """Open the project's logs folder in Finder."""
+
+    import subprocess
+    from pathlib import Path
+
+    logs_dir = Path(
+        "/Users/andyadriano/Projects/RCloneSyncManager/logs"
+    )
+
+    if not logs_dir.is_dir():
+        console.print("[red]Logs folder not found.[/red]")
+        return
+
+    try:
+        subprocess.run(
+            ["open", str(logs_dir)],
+            check=True,
+        )
+    except (subprocess.CalledProcessError, OSError) as error:
+        console.print(
+            f"[red]Could not open logs folder: {error}[/red]"
+        )
